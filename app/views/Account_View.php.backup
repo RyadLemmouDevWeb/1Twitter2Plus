@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1Twitter2Plus</title>
+</head>
+<body>
+    <div>
+        <button><img src="./Assets/Icons/icons_twitter-.png" alt="logo de twitter"></button>
+        <button><img src="./Assets/Icons/home.png" alt="icone bouton home"></button>
+        <button><img src="./Assets/Icons/search.png" alt="icone recherche"></button>
+        <button><img src="./Assets/Icons/notifications_bell.png" alt="icone cloche notification"></button>
+        <button><img src="./Assets/Icons/bookmark.png" alt="icone signets"></button>
+        <button><img src="" alt=""></button>
+    </div>
+</body>
+</html>
