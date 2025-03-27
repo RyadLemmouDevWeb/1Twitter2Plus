@@ -1,7 +1,7 @@
 # My_Twitter
 
 ## Description
-My_Twitter est un projet de réseau social inspiré de Twitter, développé en collaboration par **Tom, Ryad, Mathéo et Pavel**. Ce projet vise à permettre aux utilisateurs de publier des messages, d'interagir avec les publications des autres et d'explorer du contenu en temps réel.
+My_Twitter est un projet de réseau social inspiré de Twitter, développé en collaboration par **Tom, Pavel, Mathéo et Ryad**. Ce projet vise à permettre aux utilisateurs de publier des messages, d'interagir avec les publications des autres et d'explorer du contenu en temps réel.
 
 ## Technologies utilisées
 - **PHP** (Back-end)
@@ -13,8 +13,7 @@ My_Twitter est un projet de réseau social inspiré de Twitter, développé en c
 
 ### 1. Cloner le dépôt
 ```bash
-git clone https://github.com/votre-repo/My_Twitter.git
-cd My_Twitter
+git clone git@github.com:RyadLemmouDevWeb/1Twitter2Plus.git
 ```
 
 ### 2. Lancer le serveur PHP
