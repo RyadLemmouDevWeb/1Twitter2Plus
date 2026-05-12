@@ -1,0 +1,662 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-1: #f7f3ea;
+  --bg-2: #e6f4f5;
+  --bg-3: #fdebd7;
+  --surface: rgba(255, 255, 255, 0.9);
+  --surface-soft: rgba(255, 255, 255, 0.78);
+  --text: #1f2a30;
+  --muted: #5f7380;
+  --border: rgba(68, 93, 108, 0.2);
+  --accent: #0f766e;
+  --accent-2: #f97316;
+  --shadow: 0 12px 30px rgba(31, 42, 48, 0.12);
+}
+
+.dark {
+  --bg-1: #0f172a;
+  --bg-2: #1e293b;
+  --bg-3: #0f172a;
+  --surface: rgba(30, 41, 59, 0.9);
+  --surface-soft: rgba(30, 41, 59, 0.78);
+  --text: #f8fafc;
+  --muted: #94a3b8;
+  --border: rgba(255, 255, 255, 0.1);
+  --shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body.ui-refresh {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  font-family: 'Space Grotesk', 'Avenir Next', 'Segoe UI', sans-serif;
+  background: linear-gradient(125deg, var(--bg-1) 0%, var(--bg-2) 46%, var(--bg-3) 100%);
+  position: relative;
+  overflow-x: hidden;
+}
+
+body.ui-refresh::before,
+body.ui-refresh::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  animation: floatBlob 11s ease-in-out infinite;
+}
+
+body.ui-refresh::before {
+  left: -140px;
+  bottom: -140px;
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle at 30% 30%, rgba(15, 118, 110, 0.28), rgba(15, 118, 110, 0));
+}
+
+body.ui-refresh::after {
+  right: -130px;
+  top: -130px;
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle at 60% 40%, rgba(249, 115, 22, 0.24), rgba(249, 115, 22, 0));
+  animation-direction: reverse;
+}
+
+body.ui-refresh h1,
+body.ui-refresh h2,
+body.ui-refresh h3 {
+  font-family: 'Fraunces', 'Georgia', serif;
+  color: var(--text);
+  letter-spacing: 0.2px;
+}
+
+body.ui-refresh a {
+  text-decoration: none;
+}
+
+body.ui-refresh .app-grid,
+body.ui-refresh .profile-layout {
+  width: min(1240px, 94vw) !important;
+  margin: 0 auto !important;
+  display: grid !important;
+  grid-template-columns: 280px minmax(0, 1fr) 320px;
+  gap: 1rem !important;
+  min-height: calc(100vh - 2rem) !important;
+  padding: 1rem 0;
+  position: relative;
+  z-index: 1;
+}
+
+body.ui-refresh #left {
+  width: auto !important;
+  height: calc(100vh - 2rem) !important;
+  border: 1px solid var(--border);
+  border-radius: 26px;
+  padding: 1rem;
+  background: var(--surface-soft);
+  backdrop-filter: blur(9px);
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 1rem;
+}
+
+body.ui-refresh #left ul {
+  gap: 0.45rem !important;
+}
+
+body.ui-refresh #left ul a {
+  border-radius: 14px !important;
+  padding: 0.72rem 1rem !important;
+  color: var(--text) !important;
+  transition: background 0.22s ease, transform 0.22s ease;
+}
+
+body.ui-refresh #left ul a:hover {
+  background: rgba(15, 118, 110, 0.14) !important;
+  transform: translateX(4px);
+}
+
+body.ui-refresh #left ul a p {
+  color: var(--muted) !important;
+  font-size: 1.08rem;
+}
+
+body.ui-refresh #left ul a p.font-bold {
+  color: var(--text) !important;
+}
+
+body.ui-refresh #left button {
+  border: 0;
+  border-radius: 999px !important;
+  color: #ffffff !important;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2)) !important;
+  box-shadow: 0 10px 22px rgba(15, 118, 110, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+body.ui-refresh #left button:hover {
+  transform: translateY(-1px) scale(1.01);
+  box-shadow: 0 14px 28px rgba(15, 118, 110, 0.3);
+}
+
+body.ui-refresh #left .name-profile p:first-child {
+  color: var(--text) !important;
+}
+
+body.ui-refresh #left .name-profile p:last-child {
+  color: var(--muted) !important;
+}
+
+body.ui-refresh #mid,
+body.ui-refresh .profile-main,
+body.ui-refresh .thread-shell > article,
+body.ui-refresh .thread-shell > section,
+body.ui-refresh .thread-shell > div {
+  width: auto !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 26px !important;
+  background: var(--surface) !important;
+  box-shadow: var(--shadow) !important;
+}
+
+body.ui-refresh #mid {
+  border: none !important;
+  overflow: hidden;
+}
+
+body.ui-refresh #mid > .flex.justify-around {
+  background: rgba(247, 250, 251, 0.9);
+}
+
+body.ui-refresh #mid > .flex.justify-around a {
+  color: var(--muted) !important;
+  font-weight: 600;
+}
+
+body.ui-refresh #mid > .flex.justify-around a.border-b-4 {
+  color: var(--text) !important;
+  border-color: var(--accent) !important;
+}
+
+body.ui-refresh #feed {
+  padding-bottom: 1.4rem;
+}
+
+body.ui-refresh .tweet-card {
+  border-bottom: 1px solid var(--border) !important;
+  transition: background 0.25s ease, transform 0.25s ease;
+  animation: cardIn 0.42s ease both;
+}
+
+body.ui-refresh .tweet-card:nth-child(2n) {
+  animation-delay: 0.04s;
+}
+
+body.ui-refresh .tweet-card:nth-child(3n) {
+  animation-delay: 0.08s;
+}
+
+body.ui-refresh .tweet-card:hover {
+  background: rgba(14, 116, 144, 0.07) !important;
+  transform: translateY(-1px);
+}
+
+body.ui-refresh .tweet-card p,
+body.ui-refresh .tweet-card a,
+body.ui-refresh .tweet-card span {
+  color: var(--text) !important;
+}
+
+body.ui-refresh .tweet-card form button {
+  border-radius: 999px;
+  padding: 0.15rem 0.55rem;
+  transition: background 0.2s ease;
+}
+
+body.ui-refresh .tweet-card form button:hover {
+  background: rgba(15, 118, 110, 0.12);
+}
+
+body.ui-refresh #skeleton-loader .bg-gray-200 {
+  background: linear-gradient(90deg, #ecf2f4, #ffffff, #ecf2f4);
+  background-size: 200% 100%;
+  animation: shimmer 1.3s linear infinite;
+}
+
+body.ui-refresh #right {
+  width: auto !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  gap: 1rem;
+}
+
+body.ui-refresh #right > * {
+  border: 1px solid var(--border) !important;
+  border-radius: 20px !important;
+  background: var(--surface) !important;
+  box-shadow: var(--shadow) !important;
+}
+
+body.ui-refresh #search-bar {
+  margin-top: 0 !important;
+}
+
+body.ui-refresh #search-bar input,
+body.ui-refresh #search-bar button,
+body.ui-refresh input,
+body.ui-refresh textarea,
+body.ui-refresh select {
+  color: var(--text);
+}
+
+body.ui-refresh #tweet-form > div {
+  width: min(680px, 92vw) !important;
+  border: 1px solid var(--border);
+  border-radius: 24px !important;
+  background: var(--surface) !important;
+  box-shadow: var(--shadow);
+}
+
+body.ui-refresh #tweet-form textarea,
+body.ui-refresh #tweet-form input {
+  background: #ffffff !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+}
+
+body.ui-refresh #tweet-form button[type='submit'] {
+  border: 0;
+  color: #ffffff !important;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2)) !important;
+}
+
+body.ui-refresh.auth-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body.ui-refresh .auth-shell {
+  width: min(980px, 94vw);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(300px, 1fr));
+  gap: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+body.ui-refresh .auth-shell .login-form,
+body.ui-refresh .auth-shell .signup-form {
+  width: 100% !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 24px !important;
+  padding: 1.4rem 1.3rem !important;
+  background: var(--surface-soft) !important;
+  box-shadow: var(--shadow) !important;
+}
+
+body.ui-refresh .auth-shell h2 {
+  color: var(--text);
+  font-size: 1.55rem;
+}
+
+body.ui-refresh .auth-shell input,
+body.ui-refresh .auth-shell select {
+  border-radius: 12px !important;
+  border: 1px solid var(--border) !important;
+  background: #ffffff !important;
+  color: var(--text) !important;
+}
+
+body.ui-refresh .auth-shell button[type='submit'] {
+  border: 0;
+  border-radius: 12px !important;
+  font-weight: 600;
+  color: #ffffff !important;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2)) !important;
+}
+
+body.ui-refresh .auth-shell a.text-blue-500 {
+  color: var(--accent) !important;
+  font-weight: 600;
+}
+
+body.ui-refresh.message-page .app-grid,
+body.ui-refresh.korg-page .app-grid {
+  grid-template-columns: 280px minmax(0, 1fr) !important;
+}
+
+body.ui-refresh.message-page section.w-3\/4,
+body.ui-refresh.korg-page section.w-3\/4 {
+  width: auto !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 26px !important;
+  background: var(--surface) !important;
+  box-shadow: var(--shadow) !important;
+}
+
+body.ui-refresh #container-messages a,
+body.ui-refresh .conversation-item {
+  border-bottom: 1px solid var(--border) !important;
+  transition: background 0.2s ease;
+}
+
+body.ui-refresh #container-messages a:hover,
+body.ui-refresh .conversation-item:hover {
+  background: rgba(15, 118, 110, 0.09) !important;
+}
+
+body.ui-refresh .message-bubble {
+  border-radius: 16px !important;
+}
+
+body.ui-refresh .message-bubble.bg-blue-700 {
+  color: #ffffff;
+  background: linear-gradient(135deg, #14b8a6, #0f766e) !important;
+}
+
+body.ui-refresh .message-bubble.bg-neutral-700 {
+  color: var(--text) !important;
+  border: 1px solid var(--border);
+  background: #f2f6f8 !important;
+}
+
+body.ui-refresh .chat-compose,
+body.ui-refresh #send-to-korg {
+  border: 1px solid var(--border) !important;
+  border-radius: 18px !important;
+  background: #ffffff !important;
+}
+
+body.ui-refresh .chat-compose input,
+body.ui-refresh #send-to-korg input {
+  color: var(--text) !important;
+}
+
+body.ui-refresh.account-page .profile-layout {
+  grid-template-columns: 280px minmax(0, 1fr) !important;
+}
+
+body.ui-refresh.account-page .profile-layout > nav {
+  grid-column: 1 / 2;
+}
+
+body.ui-refresh.account-page .profile-layout > section {
+  grid-column: 2 / 3;
+  margin-left: 0 !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 26px !important;
+  background: var(--surface) !important;
+  box-shadow: var(--shadow) !important;
+}
+
+body.ui-refresh.account-page .profile-layout > section > section {
+  border: 1px solid var(--border) !important;
+  border-radius: 20px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+
+body.ui-refresh.account-page #logoutMenu {
+  border: 1px solid var(--border) !important;
+  border-radius: 14px !important;
+  box-shadow: var(--shadow);
+}
+
+body.ui-refresh.thread-page .thread-shell {
+  width: min(920px, 94vw) !important;
+  margin: 0 auto !important;
+  position: relative;
+  z-index: 1;
+  animation: fadeIn 0.42s ease;
+}
+
+body.ui-refresh.thread-page .thread-shell > article,
+body.ui-refresh.thread-page .thread-shell > section,
+body.ui-refresh.thread-page .thread-shell > div {
+  border: 1px solid var(--border) !important;
+  border-radius: 22px !important;
+  background: var(--surface) !important;
+  box-shadow: var(--shadow) !important;
+}
+
+body.ui-refresh.thread-page .text-white {
+  color: var(--text) !important;
+}
+
+body.ui-refresh.thread-page .text-neutral-400,
+body.ui-refresh.thread-page .text-neutral-500 {
+  color: var(--muted) !important;
+}
+
+body.ui-refresh.thread-page textarea {
+  border: 1px solid var(--border) !important;
+  background: #ffffff !important;
+  color: var(--text) !important;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes floatBlob {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(0, -18px, 0);
+  }
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(9px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1150px) {
+  body.ui-refresh .app-grid,
+  body.ui-refresh .profile-layout {
+    width: min(980px, 95vw) !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  body.ui-refresh #left {
+    position: relative;
+    top: auto;
+    height: auto !important;
+  }
+
+  body.ui-refresh #left ul {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.42rem !important;
+  }
+
+  body.ui-refresh #left ul a {
+    justify-content: center;
+    padding: 0.62rem 0.7rem !important;
+  }
+
+  body.ui-refresh #left ul a p {
+    font-size: 0.94rem;
+  }
+
+  body.ui-refresh #right {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  body.ui-refresh.message-page .app-grid,
+  body.ui-refresh.korg-page .app-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  body.ui-refresh.message-page section.w-3\/4,
+  body.ui-refresh.korg-page section.w-3\/4 {
+    width: 100% !important;
+  }
+
+  body.ui-refresh.account-page .profile-layout > nav,
+  body.ui-refresh.account-page .profile-layout > section {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 720px) {
+  body.ui-refresh .auth-shell {
+    grid-template-columns: 1fr;
+  }
+
+  body.ui-refresh .auth-shell .signup-form,
+  body.ui-refresh .auth-shell .login-form {
+    padding: 1.1rem !important;
+  }
+
+  body.ui-refresh #left ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  body.ui-refresh .tweet-card {
+    padding: 0.86rem !important;
+  }
+
+  body.ui-refresh.message-page #send-to-user,
+  body.ui-refresh.korg-page #send-to-korg {
+    position: sticky !important;
+    bottom: 0.5rem !important;
+    left: auto !important;
+    width: 100% !important;
+    border-width: 1px !important;
+    border-radius: 14px !important;
+  }
+
+  body.ui-refresh.thread-page .thread-shell {
+    width: 96vw !important;
+  }
+}
+
+.dark img[src*="Black_Icons/"], .dark img[src*="/assets/Icons/"] { filter: brightness(0) invert(1); } 
+.dark img[src*="light_mode.png"], .dark img[src*="dark_mode.png"], .dark img[src*="pics/"] { filter: none !important; }
+
+/* Force dark mode colors for elements with hardcoded Tailwind background classes */
+.dark body.ui-refresh .bg-white,
+.dark body.ui-refresh .bg-white\/90,
+.dark body.ui-refresh .bg-white\/80,
+.dark body.ui-refresh .bg-white\/75,
+.dark body.ui-refresh .bg-white\/50 {
+  background-color: var(--surface) !important;
+  color: var(--text) !important;
+}
+
+.dark body.ui-refresh .bg-slate-50,
+.dark body.ui-refresh .bg-slate-50\/80 {
+  background-color: var(--bg-2) !important;
+  color: var(--text) !important;
+}
+
+.dark body.ui-refresh .border-slate-100,
+.dark body.ui-refresh .border-slate-200,
+.dark body.ui-refresh .border-slate-50 {
+  border-color: var(--border) !important;
+}
+
+.dark body.ui-refresh .text-slate-900,
+.dark body.ui-refresh .text-slate-800,
+.dark body.ui-refresh .text-slate-700 {
+  color: var(--text) !important;
+}
+
+.dark body.ui-refresh .text-slate-500,
+.dark body.ui-refresh .text-slate-400 {
+  color: var(--muted) !important;
+}
+
+.dark body.ui-refresh .hover\:bg-slate-50:hover,
+.dark body.ui-refresh .hover\:bg-slate-100:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Specific component fixes */
+.dark body.ui-refresh input,
+.dark body.ui-refresh textarea,
+.dark body.ui-refresh select {
+  background-color: var(--bg-1) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+/* Action states (Like, Retweet, Bookmark) */
+.action-btn:hover img { transform: scale(1.1); transition: transform 0.2s; }
+
+.action-liked { color: #e11d48 !important; background-color: #fff1f2 !important; }
+.action-liked img { filter: invert(18%) sepia(94%) saturate(4815%) hue-rotate(341deg) brightness(92%) contrast(93%) !important; }
+
+.action-retweeted { color: #059669 !important; background-color: #ecfdf5 !important; }
+.action-retweeted img { filter: invert(24%) sepia(95%) saturate(1966%) hue-rotate(148deg) brightness(96%) contrast(101%) !important; }
+
+.action-bookmarked { color: #d97706 !important; background-color: #fffbeb !important; }
+.action-bookmarked img { filter: invert(36%) sepia(82%) saturate(2035%) hue-rotate(19deg) brightness(96%) contrast(101%) !important; }
+
+/* Dark mode action states */
+.dark .action-liked { 
+    color: #fb7185 !important; 
+    background-color: rgba(225, 29, 72, 0.15) !important; 
+}
+.dark .action-liked img { 
+    filter: invert(53%) sepia(93%) saturate(1495%) hue-rotate(317deg) brightness(101%) contrast(97%) !important; 
+}
+
+.dark .action-retweeted { 
+    color: #34d399 !important; 
+    background-color: rgba(5, 150, 105, 0.15) !important; 
+}
+.dark .action-retweeted img { 
+    filter: invert(72%) sepia(61%) saturate(464%) hue-rotate(106deg) brightness(92%) contrast(89%) !important; 
+}
+
+.dark .action-bookmarked { 
+    color: #fbbf24 !important; 
+    background-color: rgba(217, 119, 6, 0.15) !important; 
+}
+.dark .action-bookmarked img { 
+    filter: invert(84%) sepia(21%) saturate(1542%) hue-rotate(352deg) brightness(101%) contrast(98%) !important; 
+}
+
+.dark body.ui-refresh #search-bar input {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}

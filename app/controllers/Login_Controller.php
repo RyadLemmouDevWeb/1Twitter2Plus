@@ -4,30 +4,41 @@ require_once __DIR__ . '/../models/Login_Model.php';
 class Login_Controller
 {
     private $loginModel;
-    private $salt = "vive le projet tweet_academy";
 
     public function __construct()
     {
         $this->loginModel = new Login_Model();
-        
     }
 
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $ip = $_SERVER['REMOTE_ADDR'];
+
+            if ($this->loginModel->isRateLimited($ip)) {
+                header("Location: /login?error=Too+many+attempts.+Please+wait+15+minutes.");
+                exit();
+            }
+
+            if (!csrf_verify()) {
+                header("Location: /login?error=Invalid+session");
+                exit();
+            }
+
             if (isset($_POST['email']) && isset($_POST['password'])) {
                 $email = $_POST['email'];
                 $password = $_POST['password'];
 
-                $hashedPassword = $this->hashPassword($password);
+                $success = $this->loginModel->checkEmail($email) && $this->loginModel->verifyPassword($email, $password);
+                $this->loginModel->recordAttempt($ip, $success);
 
-                if ($this->loginModel->checkEmail($email) && $this->loginModel->verifyPassword($email, $hashedPassword)) {
+                if ($success) {
                     $user = $this->loginModel->getUserByEmail($email);
                     $_SESSION['user'] = $user;
                     header("Location: /feed");
                     exit();
                 } else {
-                    header("Location: /404");
+                    header("Location: /login?error=Invalid+credentials");
                     exit();
                 }
             }
@@ -37,6 +48,11 @@ class Login_Controller
     public function register()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!csrf_verify()) {
+                header("Location: /login?error=Invalid+session");
+                exit();
+            }
+
             if (isset($_POST['firstname'], $_POST['lastname'], $_POST['display_name'], $_POST['username'], $_POST['email'], $_POST['password'], $_POST['birthdate'])) {
                 $firstname = $_POST['firstname'];
                 $lastname = $_POST['lastname'];
@@ -45,34 +61,32 @@ class Login_Controller
                 $email = $_POST['email'];
                 $password = $_POST['password'];
                 $birthdate = $_POST['birthdate'];
-                $phone = isset($_POST['phone']) ? $_POST['phone'] : null;
-                $genre = isset($_POST['genre']) ? $_POST['genre'] : null;
-                $picture = isset($_FILES['picture']) ? $_FILES['picture'] : null;
-                $header = isset($_FILES['header']) ? $_FILES['header'] : null;
-                $url = isset($_POST['url']) ? $_POST['url'] : null;
-                $biography = isset($_POST['biography']) ? $_POST['biography'] : null;
-                $city = isset($_POST['city']) ? $_POST['city'] : null;
-                $country = isset($_POST['country']) ? $_POST['country'] : null;
-                $ban = isset($_POST['ban']) ? $_POST['ban'] : null;
-                $verification_code = isset($_POST['verification_code']) ? $_POST['verification_code'] : null;
-                $hashedPassword = $this->hashPassword($password);
+                
+                $passwordValidation = validate_password($password);
+                if ($passwordValidation !== true) {
+                    header("Location: /login?error=" . urlencode($passwordValidation));
+                    exit();
+                }
 
-                if ($this->loginModel->registerUser($firstname, $lastname, $display_name, $username, $email, $hashedPassword, $birthdate, $phone, $genre, $picture, $header, $url, $biography, $city, $country, $ban, $verification_code)) {
+                $phone = $_POST['phone'] ?? null;
+                $genre = $_POST['genre'] ?? null;
+                $picture = $_FILES['picture'] ?? null;
+                $header = $_FILES['header'] ?? null;
+                $url = $_POST['url'] ?? null;
+                $biography = $_POST['biography'] ?? null;
+                $city = $_POST['city'] ?? null;
+                $country = $_POST['country'] ?? null;
+
+                if ($this->loginModel->registerUser($firstname, $lastname, $display_name, $username, $email, $password, $birthdate, $phone, $genre, $picture, $header, $url, $biography, $city, $country)) {
                     $user = $this->loginModel->getUserByEmail($email);
                     $_SESSION['user'] = $user;
                     header("Location: /feed");
                     exit();
                 } else {
-                    header("Location: /404");
+                    header("Location: /login?error=Unable+to+register");
                     exit();
                 }
             }
         }
-    }
-
-    private function hashPassword($password)
-    {
-        $passwordWithSalt = $password . $this->salt;
-        return hash('ripemd160', $passwordWithSalt);
     }
 }

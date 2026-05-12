@@ -80,7 +80,7 @@ function displayResponse(message) {
   var responseText = document.createElement("div");
   responseText.classList.add("w-4/5", "h-fit", "bg-neutral-700", "rounded-3xl", "p-3", "pr-6", "rounded-tl-none", "ml-6", "flex", "gap-3");
   var imageText = document.createElement("img");
-  imageText.src = "/assets/Icons/korg.png";
+  imageText.src = "/assets/Black_Icons/Black_Korg.png";
   imageText.classList.add("w-8", "h-8");
   var contentText = document.createElement("p");
   contentText.classList.add("text-md");

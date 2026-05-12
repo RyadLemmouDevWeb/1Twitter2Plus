@@ -25,7 +25,7 @@ function displayMessage(message) {
   responseText.classList.add("w-4/5", "h-fit", "bg-neutral-700", "rounded-3xl", "p-3", "pr-6", "rounded-tl-none", "ml-6", "flex", "gap-3");
 
   const imageText = document.createElement("img");
-  imageText.src = "/assets/Icons/korg.png";
+  imageText.src = "/assets/Black_Icons/Black_Korg.png";
   imageText.classList.add("w-8", "h-8")
 
 

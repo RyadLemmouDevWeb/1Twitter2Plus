@@ -1,10 +1,10 @@
 ALTER TABLE `message` CHANGE `id` `id` INT NOT NULL AUTO_INCREMENT;
 
 INSERT INTO user (role, firstname, lastname, username, display_name, email, password, birthdate, creation_date) VALUE
-  ("admin", "Tom", "Cardonnel", "Tomu", "umoT", "tom.cardonnel@epitech.eu", "admin", NOW(), CURRENT_TIMESTAMP()),
-  ("admin", "Ryad", "Lemmou", "Ryad", "RyadLeBG", "ryad@epitech.eu", "admin", NOW(), CURRENT_TIMESTAMP()),
-  ("admin", "Pavel", "Gatti", "Pavel", "Grokk75", "Pavel@epitech.eu", "admin", NOW(), CURRENT_TIMESTAMP()),
-  ("admin", "Matheo", "Ritou", "Mateo", "Ratheo", "matheo@epitech.eu", "admin", NOW(), CURRENT_TIMESTAMP());
+  ("admin", "Tom", "Cardonnel", "Tomu", "umoT", "tom.cardonnel@epitech.eu", "$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm", NOW(), CURRENT_TIMESTAMP()),
+  ("admin", "Ryad", "Lemmou", "Ryad", "RyadLeBG", "ryad@epitech.eu", "$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm", NOW(), CURRENT_TIMESTAMP()),
+  ("admin", "Pavel", "Gatti", "Pavel", "Grokk75", "Pavel@epitech.eu", "$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm", NOW(), CURRENT_TIMESTAMP()),
+  ("admin", "Matheo", "Ritou", "Mateo", "Ratheo", "matheo@epitech.eu", "$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm", NOW(), CURRENT_TIMESTAMP());
 
 INSERT INTO tweet (id_user, content, creation_date) VALUE 
   (1, "Hello! Je suis le tweet de Tom.", CURRENT_TIMESTAMP()),

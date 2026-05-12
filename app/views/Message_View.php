@@ -3,67 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>1Twitter2Plus</title>
+  <title>Messages - 1Twitter2Plus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/output.css">
+  <link rel="stylesheet" href="/css/ui-refresh.css">
 </head>
-<body class="dark:bg-neutral-900 dark:text-neutral-300 w-screen h-screen">
-  <div class="flex justify-between w-4/5 m-auto h-full gap-8">
-      <nav id="left" class="w-1/4 flex flex-col justify-between">
-        <img src="/assets/White_Icons/icons_twitter-.png" alt="Logo" class="w-16 h-16 mb-3 mt-2">
-        <ul class="flex flex-col gap-9 text-2xl select-none">
-          <a href="/feed" class="flex gap-6 items-center cursor-pointer hover:bg-neutral-700 rounded-full p-3 pl-6"><img src="/assets/Icons/home.png" alt="Icone Home" class="w-8 h-8"><p class="h-fit">Accueil</p></a>
-          <a href="/feed" class="flex gap-6 items-center cursor-pointer hover:bg-neutral-700 rounded-full p-3 pl-6"><img src="/assets/Icons/search.png" alt="Search Home" class="w-8 h-8"><p class="h-fit">Explorer</p></a>
-          <a href="/messages" class="flex gap-6 items-center cursor-pointer hover:bg-neutral-700 rounded-full p-3 pl-6"><img src="/assets/Icons/answer.png" alt="Message Home" class="w-8 h-8"><p class="h-fit font-bold text-white">Message</p></a>
-          <a href="/korg" class="flex gap-6 items-center cursor-pointer hover:bg-neutral-700 rounded-full p-3 pl-6"><img src="/assets/Icons/korg.png" alt="Korg Home" class="w-8 h-8"><p class="h-fit">Korg</p></a>
-          <a href="/account" class="flex gap-6 items-center cursor-pointer hover:bg-neutral-700 rounded-full p-3 pl-6"><img src="/assets/Icons/profile.png" alt="Profil Home" class="w-8 h-8"><p class="h-fit">Profil</p></a>
-        </ul>
-        <div>
-          <button class="bg-neutral-200 text-neutral-800 w-full py-5 rounded-full font-bold text-2xl cursor-pointer hover:bg-neutral-400 hover:text-neutral-900">Poster</button>
-          <div class="flex my-8 gap-3 px-6 py-3 rounded-full  cursor-pointer hover:bg-neutral-700">
-            <img src="/assets/Icons/profile.png" alt="Picture image" class="w-12 h-12">
-            <div class="name-profile">
-            <p class="font-bold"><?= $_SESSION['user']['firstname'] ?> <?= $_SESSION['user']['lastname'] ?></p>
-            <p class="text-neutral-400">@<?= $_SESSION['user']['username'] ?></p>
-            </div>
+<body class="ui-refresh min-h-screen bg-linear-to-br from-amber-50 via-cyan-50 to-rose-50 text-slate-800 dark:text-slate-200 font-['Space_Grotesk',sans-serif] dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+  <div class="relative z-10 mx-auto w-[95%] xl:w-4/5 px-4 py-4">
+    <div class="grid min-h-[calc(100vh-2rem)] grid-cols-1 gap-4 xl:grid-cols-[250px_minmax(0,1fr)]">
+      <?php include 'Sidebar.php'; ?>
+
+      <section class="relative flex flex-col overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 shadow-[0_12px_30px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+        <header class="border-b border-slate-200 dark:border-slate-700 px-5 py-4 flex items-center justify-between">
+          <div>
+            <h1 class="font-['Fraunces',serif] text-2xl text-slate-900 dark:text-slate-100">Messages</h1>
           </div>
-        </div>
-      </nav>
+          <div class="flex items-center gap-3">
+            <button onclick="openNewMessageModal()" class="rounded-full bg-teal-500 px-4 py-2 text-xs font-semibold text-white transition hover:bg-teal-600 shadow-sm">Nouveau message</button>
+            <?php if (isset($_GET['username'])): ?>
+              <a href="/messages" class="text-sm font-semibold text-teal-600 dark:text-teal-400 hover:underline">← Retour</a>
+            <?php endif; ?>
+          </div>
+        </header>
 
-      <section class="w-3/4 h-full border-x border-neutral-600 relative overflow-hidden">
-        <div id="container-messages" class="flex flex-col h-full overflow-auto">
-        <?php if (isset($conversations)): ?>
-          <?php foreach ($conversations as $conversation): ?> 
-            <a href="/message?username=<?= $conversation['username'] ?>" class="w-full p-3 flex gap-3 border-b border-neutral-700 hover:bg-neutral-800">
-              <img src="<?= $conversation['URL_Profile'] ? $conversation['URL_Profile'] : "/assets/Icons/profile.png" ?>" alt="" class="w-16 h-16">
-              <div class="">
-                <h2 class=""><?= $conversation['display_name'] ?> <span class="text-neutral-500">@<?= $conversation['username'] ?></span></h2>
-                <p class="text-neutral-500"><?= $conversation['msg_content'] ?></p>
+        <div id="container-messages" class="flex-1 overflow-auto p-4 space-y-4">
+          <?php if (!isset($_GET['username'])): ?>
+            <!-- Discussion List -->
+            <?php if (!empty($conversations)): ?>
+              <div class="flex flex-col divide-y divide-slate-100 dark:divide-slate-800">
+                <?php foreach ($conversations as $conversation): ?>
+                  <a href="/message?username=<?= urlencode($conversation['username']) ?>" class="flex items-center gap-4 py-4 px-2 transition hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                    <img src="<?= $conversation['URL_Profile'] ?: '/assets/Black_Icons/Black_profil.png' ?>" class="h-12 w-12 rounded-2xl border border-slate-200 dark:border-slate-700 object-cover">
+                    <div class="min-w-0 flex-1">
+                      <div class="flex items-center justify-between">
+                        <p class="truncate text-sm font-bold text-slate-900 dark:text-slate-100"><?= htmlspecialchars($conversation['display_name']) ?></p>
+                        <p class="text-[10px] text-slate-400"><?= $conversation['date'] ?></p>
+                      </div>
+                      <p class="truncate text-xs text-slate-500 dark:text-slate-400">@<?= htmlspecialchars($conversation['username']) ?></p>
+                      <p class="truncate text-sm text-slate-600 dark:text-slate-300 mt-1"><?= htmlspecialchars($conversation['msg_content']) ?></p>
+                    </div>
+                  </a>
+                <?php endforeach ?>
               </div>
-            </a>
-          <?php endforeach ?>
-        <?php endif ?>
-
-        <?php foreach ($messageConversation as $message): ?>
-          <div class="p-6">
-              <div class="w-4/5 h-fit gb-neutral-700 rounded-3xl p-3 pr-6 <?php if(/*$_SESSION['user']['id']*/ 3 == $message['id_user']) { echo ' ml-32 rounded-tr-none bg-blue-700';} else {echo ' rounded-tl-none bg-neutral-700';}?> ml-6 flex gap-3">
-                <img src="<?= $message['URL_Profile'] ? $message['URL_Profile'] : "/assets/Icons/profile.png" ?>" alt="profile picture" class="w-8 h-8 self-center">
-                <div>
-                  <h2><?= $message['display_name'] ?> <span class="text-neutral-400">@<?= $message['username'] ?> <?= $message['date'] ?></span></h2>
-                  <p class="text-md"><?= $message['content'] ?></p>
+            <?php else: ?>
+              <div class="flex flex-col items-center justify-center py-20 opacity-40 text-center">
+                <img src="/assets/Black_Icons/black_answer.png" class="h-12 w-12 mb-4 dark:brightness-0 dark:invert">
+                <p class="text-slate-500 dark:text-slate-400">Aucune conversation pour le moment.</p>
+              </div>
+            <?php endif ?>
+          <?php else: ?>
+            <?php if (!empty($messageConversation)): ?>
+              <?php foreach ($messageConversation as $message): ?>
+                <?php $isMine = (($_SESSION['user']['id'] ?? 0) == $message['id_user']); ?>
+                <div class="flex <?= $isMine ? 'justify-end' : 'justify-start' ?>">
+                  <div class="max-w-[80%] rounded-2xl px-4 py-2 shadow-sm <?= $isMine ? 'bg-teal-500 text-white rounded-br-sm' : 'bg-slate-100 text-slate-800 dark:text-slate-200 dark:bg-slate-800 rounded-bl-sm' ?>">
+                    <p class="text-sm"><?= htmlspecialchars($message['content']) ?></p>
+                    <p class="text-[10px] mt-1 opacity-70 text-right"><?= $message['date'] ?></p>
+                  </div>
                 </div>
+              <?php endforeach ?>
+            <?php else: ?>
+              <div class="text-center py-10 opacity-50">
+                <p class="text-sm">Aucun message. Soyez le premier à en envoyer un !</p>
               </div>
-            </div>
-        <?php endforeach ?>
-        
-        <?php if($_GET['username']): ?>
-          <form action="/message?username=<?= $_GET['username'] ?>" method="POST" id="send-to-user" class="flex bg-neutral-700 py-3 px-6 rounded-full absolute bottom-6 w-4/5 left-1/10 gap-6 border-4 border-neutral-900">
-            <button type="submit" class="cursor-pointer"><img src="/assets/Icons/send.png" alt="Icone send" class="w-6 h-6"></button>
-            <input type="text" name="content" placeholder="Text ..." class="w-full focus:outline-none ">
-            <button type="submit" class="bg-indigo-500 text-white py-2 px-4 rounded-lg">Tweeter</button>
-          </form>
+            <?php endif ?>
+          <?php endif; ?>
+        </div>
+
+        <?php if (isset($_GET['username'])): ?>
+          <div class="p-4 border-t border-slate-200 dark:border-slate-700 bg-white/50 backdrop-blur-md dark:bg-slate-900/50">
+            <form action="/message?username=<?= urlencode($_GET['username']) ?>" method="POST" class="flex items-center gap-3">
+              <?= csrf_input() ?>
+              <input type="text" name="content" required placeholder="Ecrire un message..." class="flex-1 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-4 py-2.5 text-sm text-slate-800 dark:text-slate-200 outline-none transition focus:border-teal-400">
+              <button type="submit" class="rounded-full bg-teal-500 p-2.5 text-white transition hover:bg-teal-600">
+                <img src="/assets/Icons/send.png" class="h-5 w-5 invert">
+              </button>
+            </form>
+          </div>
         <?php endif ?>
       </section>
+    </div>
   </div>
-<!-- <script src="/lib/display-Messages.js"></script> -->
 </body>
 </html>

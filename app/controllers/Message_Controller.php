@@ -1,5 +1,5 @@
 <?php
-require "../app/models/Message_Model.php";
+require_once __DIR__ . '/../models/Message_Model.php';
 
 class MessageController
 {
@@ -10,37 +10,91 @@ class MessageController
   }
 
   public function showMessage() {
-      $userId = $this->messageModel->idFromUsername($_GET['username']);
-      return $this->messageModel->showMessage(3, $userId["id"]);
-    //   return $this->messageModel->showMessage(3, $userId);
-    //   return $this->messageModel->showMessage($_SESSION['user']['id'], $userId);
-    // return $this->messageModel->showMessages($id_sender, $id_receiver);
-    # code...
-    
-}
+      if (empty($_GET['username']) || empty($_SESSION['user']['id'])) {
+        return [];
+      }
+
+      $receiver = $this->messageModel->idFromUsername($_GET['username']);
+      if (!$receiver || empty($receiver['id'])) {
+        return [];
+      }
+
+      return $this->messageModel->showMessage((int) $_SESSION['user']['id'], (int) $receiver['id']);
+    }
 
 
 public function createMessage()
 {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $id_sender = 3;
-        // $id_sender = $_SESSION['user']['id'];
-        $id_receiver = $this->messageModel->idFromUsername($_GET['username']);
-        $content = $_POST['content'];
+    if (!csrf_verify()) {
+      header("Location: /messages");
+      exit();
+    }
+
+    if (empty($_SESSION['user']['id']) || empty($_GET['username'])) {
+      header("Location: /messages");
+      exit();
+    }
+
+    $id_sender = (int) $_SESSION['user']['id'];
+    $id_receiver = $this->messageModel->idFromUsername($_GET['username']);
+    if (!$id_receiver || empty($id_receiver['id'])) {
+      header("Location: /messages");
+      exit();
+    }
+
+    $content = $_POST['content'] ?? '';
         $media = $_POST['media'] ?? null;
-        // var_dump($id_sender, $id_receiver["id"], $content, $media);
+    if ($content === '') {
+      header("Location: /message?username=" . urlencode($_GET['username']));
+      exit();
+    }
+
         $this->messageModel->insertMessage($id_sender, $id_receiver["id"], $content, $media);
-        header("Location: /message?username=". $_GET['username']);
+    header("Location: /message?username=" . urlencode($_GET['username']));
+    exit();
     }
 }
 
 public function showDiscusion(){
-    // $id_user = $_SESSION['user'];
-    $id_user = 3;
+  if (empty($_SESSION['user']['id'])) {
+    return [];
+  }
+
+  $id_user = (int) $_SESSION['user']['id'];
     return $this->messageModel->showDiscusion($id_user);
   }
 
+public function shareTweet()
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (!csrf_verify()) {
+            header("Location: /feed");
+            exit();
+        }
 
+        $viewerId = (int) ($_SESSION['user']['id'] ?? 0);
+        $receiverUsername = $_POST['receiver_username'] ?? '';
+        $tweetId = (int) ($_POST['tweet_id'] ?? 0);
+
+        if ($viewerId === 0 || $receiverUsername === '' || $tweetId === 0) {
+            header("Location: /feed");
+            exit();
+        }
+
+        $receiver = $this->messageModel->idFromUsername($receiverUsername);
+        if (!$receiver) {
+            header("Location: /feed");
+            exit();
+        }
+
+        $content = "Regarde ce tweet : http://" . $_SERVER['HTTP_HOST'] . "/tweet?id=" . $tweetId;
+        $this->messageModel->insertMessage($viewerId, $receiver['id'], $content, null);
+
+        header("Location: /message?username=" . urlencode($receiverUsername));
+        exit();
+    }
+}
 
 }
 
